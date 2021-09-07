@@ -15,7 +15,7 @@ class ReplyRepositoryTest {
     private ReplyRepository replyRepository;
 
     @Test
-    public void inserReply() {
+    public void insertReply() {
         IntStream.rangeClosed(1,300).forEach(i->{
             long bno = (long) (Math.random() * 100) + 1;
 
