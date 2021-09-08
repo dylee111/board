@@ -19,6 +19,6 @@ public class Board extends BaseEntity {
     private String title;
     private String content;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY) // LAZY(지연 로딩)로 설정.
     private Member writer;
 }
