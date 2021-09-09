@@ -33,7 +33,21 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
             " ON r.board = b " +
             " GROUP BY b ",
             countQuery = "SELECT count(b) FROM Board b ")
-    // countQuery : 메인 쿼리문에 대한 결과가 몇 개 존재하는지에 관련된 속성.
+    /*
+        Select b.bno, b.title,m.name,m.email, count(r.rno)
+        from BOARD b
+        left join member m on b.writer_email=m.email
+        left join Reply r on r.board_bno = b.bno
+        group by b.bno;
+     */
+        // countQuery : 메인 쿼리문에 대한 결과가 몇 개 존재하는지에 관련된 속성.
     Page<Object[]> getBoardWithReplyCount(Pageable pageable); // 목록 화면에 필요한 데이터
 
+    @Query("SELECT b, w, count(r) " +
+            " FROM Board b " +
+            " LEFT JOIN b.writer w " +
+            " LEFT OUTER JOIN Reply r " +
+            " ON r.board = b " +
+            " WHERE b.bno=:bno ")
+    Object getBoardByBno(@Param("bno") Long bno);
 }

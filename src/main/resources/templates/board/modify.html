@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<!-- ~ : 내가 속한 리소스 , @ : template에 포한된 경우 -->
+<th:block th:replace="~{/layout/basic :: setContent( ~{this::content} )}">
+    <th:block th:fragment="content">
+        <h1 class="mt-4">Guestbook Modify Page</h1>
+    <form action="/gusetbook/modify" method="post">
+
+        <!-- 페이지 번호 -->
+        <input type="hidden" th:value="${requestDTO.page}" name="page" />
+        <input type="hidden" th:value="${requestDTO.type}" name="type" />
+        <input type="hidden" th:value="${requestDTO.keyword}" name="keyword" />
+
+        <!-- GNO (수정 X) -->
+        <div class="form-group">
+            <label>글 번호</label>
+            <input type="text" class="form-control" name="gno" th:value="${dto.gno}" readonly>
+        </div>
+        <div style="margin-bottom:20px"></div>
+
+        <!-- Title (수정 O) -->
+        <div class="form-group">
+            <label>글 제목</label>
+            <input type="text" class="form-control" name="title" th:value="${dto.title}">
+        </div>
+        <div style="margin-bottom:20px"></div>
+
+        <!-- Content (수정 O) -->
+        <div class="form-group">
+            <label>내용</label>
+            <textarea class="form-control" name="content" rows="5">[[${dto.content}]]</textarea>
+        </div>
+        <div style="margin-bottom:20px"></div>
+
+        <!-- Writer (수정 X) -->
+        <div class="form-group">
+            <label>작성자</label>
+            <input type="text" class="form-control" name="writer" th:value="${dto.writer}" readonly>
+        </div>
+        <div style="margin-bottom:20px"></div>
+
+        <!-- Reg Date (수정 X) -->
+        <div class="form-group">
+            <label>등록 날짜</label>
+        <!-- LocalDateTime으로 데이터가 넘어가야하는데 아래의 코드는 String으로 데이터가 넘어가게 된다.
+        그렇기 때문에 name 속성을 이용하게 되면 Tpye이 맞지 않아 tpyeMismatch 에러가 발생.
+        regDate와 같은 시간 타입은 화면에서 DTO로 수집할 필요가 없다.
+        name을 DB의 컬럼명과 동일하게 맞추면 정상적으로 실행이 된다. -->
+            <input type="text" class="form-control"
+                th:value="${#temporals.format(dto.regDate, 'yyyy/MM/dd HH:mm:ss')}" readonly>
+        </div>
+        <div style="margin-bottom:20px"></div>
+
+        <!-- Mod Date (수정 X) -->
+        <div class="form-group">
+            <label>수정 날짜</label>
+            <input type="text" class="form-control" name="moddate"
+                th:value="${#temporals.format(dto.modDate, 'yyyy/MM/dd HH:mm:ss')}" readonly>
+        </div>
+        <div style="margin-bottom:20px"></div>
+    </form>
+        <button class="btn btn-primary modifyBtn">수정</button>
+        <button class="btn btn-info listBtn">목록</button>
+        <button class="btn btn-danger removeBtn">삭제</button>
+        <div style="margin-bottom:20px"></div>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script th:inline="javascript">
+            var actionForm = $("form");
+
+            $(".removeBtn").click(function() {
+
+                actionForm.attr("action", "/guestbook/remove").attr("method", "post");
+
+                actionForm.submit();
+            });
+
+            $(".modifyBtn").click(function() {
+                if(!confirm("수정하시겠습니까?")) {
+                    return;
+                }
+                actionForm
+                    .attr("action", "/guestbook/modify")
+                    .attr("method", "post")
+                    .submit();
+            });
+
+            $(".listBtn").click(function() {
+                           <!--속성 선택자-->
+                var page = $("input[name='page']");
+                var type = $("input[name='type']");
+                var keyword = $("input[name='keyword']");
+
+                actionForm.empty(); <!--form 태그의 모든 내용을 지움-->
+
+                actionForm.append(page);
+                actionForm.append(type);
+                actionForm.append(keyword);
+
+                actionForm
+                    .attr("action", "/guestbook/list")
+                    .attr("method", "get");
+
+                actionForm.submit();
+            });
+        </script>
+
+    </th:block>
+</th:block>
+</html>
