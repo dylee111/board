@@ -3,8 +3,8 @@
 <!-- ~ : 내가 속한 리소스 , @ : template에 포한된 경우 -->
 <th:block th:replace="~{/layout/basic :: setContent( ~{this::content} )}">
     <th:block th:fragment="content">
-        <h1 class="mt-4">Guestbook Modify Page</h1>
-    <form action="/gusetbook/modify" method="post">
+        <h1 class="mt-4">Board Modify Page</h1>
+    <form action="/board/modify" method="post">
 
         <!-- 페이지 번호 -->
         <input type="hidden" th:value="${requestDTO.page}" name="page" />
@@ -14,7 +14,7 @@
         <!-- GNO (수정 X) -->
         <div class="form-group">
             <label>글 번호</label>
-            <input type="text" class="form-control" name="gno" th:value="${dto.gno}" readonly>
+            <input type="text" class="form-control" name="bno" th:value="${dto.bno}" readonly>
         </div>
         <div style="margin-bottom:20px"></div>
 
@@ -35,7 +35,7 @@
         <!-- Writer (수정 X) -->
         <div class="form-group">
             <label>작성자</label>
-            <input type="text" class="form-control" name="writer" th:value="${dto.writer}" readonly>
+            <input type="text" class="form-control" name="writer" th:value="${dto.writerName}" readonly>
         </div>
         <div style="margin-bottom:20px"></div>
 
@@ -70,7 +70,7 @@
 
             $(".removeBtn").click(function() {
 
-                actionForm.attr("action", "/guestbook/remove").attr("method", "post");
+                actionForm.attr("action", "/board/remove").attr("method", "post");
 
                 actionForm.submit();
             });
@@ -80,7 +80,7 @@
                     return;
                 }
                 actionForm
-                    .attr("action", "/guestbook/modify")
+                    .attr("action", "/board/modify")
                     .attr("method", "post")
                     .submit();
             });
@@ -98,7 +98,7 @@
                 actionForm.append(keyword);
 
                 actionForm
-                    .attr("action", "/guestbook/list")
+                    .attr("action", "/board/list")
                     .attr("method", "get");
 
                 actionForm.submit();

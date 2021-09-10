@@ -24,6 +24,9 @@ public class BoardServiceImpl implements BoardService {
     private final BoardRepository repository;
     private final ReplyRepository replyRepository;
 
+    /**
+     *  글 등록
+     */
     @Override
     public Long register(BoardDTO dto) {
         log.info(dto);
@@ -35,13 +38,19 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public PageResultDTO<BoardDTO, Object[]> getList(PageRequestDTO pageRequestDTO) {
+
         log.info(pageRequestDTO);
 
         Function<Object[], BoardDTO> fn = (en ->
                 entityToDTO((Board)en[0],(Member) en[1], (Long) en[2]));
 
-        Page<Object[]> result = repository.getBoardWithReplyCount
-                (pageRequestDTO.getPageable(Sort.by("bno").descending()));
+//        Page<Object[]> result = repository.getBoardWithReplyCount
+//                (pageRequestDTO.getPageable(Sort.by("bno").descending()));
+        Page<Object[]> result = repository.searchPage(
+                pageRequestDTO.getType(),
+                pageRequestDTO.getKeyword(),
+                pageRequestDTO.getPageable(Sort.by("bno").descending())
+        );
 
         return new PageResultDTO<>(result, fn);
     } // getList()
@@ -54,6 +63,10 @@ public class BoardServiceImpl implements BoardService {
         return entityToDTO((Board) arr[0], (Member) arr[1], (Long) arr[2]);
     } // get()
 
+
+    /**
+     *  댓글 삭제
+     */
     // 댓글 삭제와 게시물 삭제는 하나의 트랜젝션으로 처리되어야 한다!
     @Transactional
     @Override
@@ -74,6 +87,9 @@ public class BoardServiceImpl implements BoardService {
 //        repository.save(board);
 //    } // modify()
 
+    /**
+     *  글 수정
+     */
     @Override // @Transactional 필요없음.
     public void modify(BoardDTO boardDTO) {
         Optional<Board> result = repository.findById(boardDTO.getBno());

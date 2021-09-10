@@ -86,4 +86,13 @@ class BoardRepositoryTest {
         Object[] arr = (Object[]) result;
         System.out.println(Arrays.toString(arr));
     } // testRead3()
+
+    @Test
+    public void testSearch1() {
+        /**
+         * BoardRepository는 SearchBoardRepository를 상속 받았지만,
+         * Spring에 의해서 실제 구현된 SearchBoardRepository의 search1()을 사용 가능.
+         */
+        boardRepository.search1();
+    }
 }
