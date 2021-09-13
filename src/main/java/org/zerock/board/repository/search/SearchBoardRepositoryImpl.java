@@ -41,6 +41,7 @@ public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport
         QReply reply = QReply.reply;
         QMember member = QMember.member;
 
+        // QuerydslRepositorySupport는 from절부터 시작.
         JPQLQuery<Board> jpqlQuery = from(board);
         jpqlQuery.leftJoin(member).on(board.writer.eq(member));
         jpqlQuery.leftJoin(reply).on(reply.board.eq(board));
