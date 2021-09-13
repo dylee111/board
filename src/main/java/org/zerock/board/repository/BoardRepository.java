@@ -50,6 +50,6 @@ public interface BoardRepository
             " LEFT JOIN b.writer w " +
             " LEFT OUTER JOIN Reply r " +
             " ON r.board = b " +
-            " WHERE b.bno=:bno ")
+            " WHERE b.bno =:bno ")
     Object getBoardByBno(@Param("bno") Long bno);
 }

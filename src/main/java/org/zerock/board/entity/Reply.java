@@ -19,6 +19,6 @@ public class Reply extends BaseEntity {
     private String text;
     private String replyer;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY) // 지연 로딩 설정
     private Board board;
 }

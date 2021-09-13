@@ -57,6 +57,9 @@ public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport
         return null;
     }
 
+    /**
+     *  여러 검색 조건 처리
+     */
     @Override
     public Page<Object[]> searchPage(String type, String keyword, Pageable pageable) {
         log.info("Search Page........................");
@@ -78,6 +81,7 @@ public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport
 
         if(type != null) {
             String[] typeArr = type.split("");
+
             // 검색 조건 작성
             BooleanBuilder conditionBuilder = new BooleanBuilder();
 
@@ -101,11 +105,12 @@ public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport
         // order by
         Sort sort = pageable.getSort();
         // tuple.orderBy(board.bno.desc());
-
+                              // order : Consumer<>의 매개변수
         sort.stream().forEach(order -> {
             Order direction = order.isAscending()? Order.ASC : Order.DESC;
             String porp = order.getProperty();
 
+            // PathBuilder : 동적 경로 생성을 위한 클래스. (EntityPathBase 클래스를 상속받음.)
             PathBuilder orderByExpression = new PathBuilder(Board.class, "board");
 
             tuple.orderBy(new OrderSpecifier(direction, orderByExpression));
@@ -113,17 +118,19 @@ public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport
         tuple.groupBy(board);
 
         // page 처리
-        tuple.offset((pageable.getOffset()));
-        tuple.limit(pageable.getPageSize());
+        tuple.offset((pageable.getOffset())); // offset : 시작 인덱스 지정
+        tuple.limit(pageable.getPageSize());  // limit : 조회할 개수 지정
 
-        List<Tuple> result = tuple.fetch();
+        List<Tuple> result = tuple.fetch(); // 조회 대상이 여러 건일 경우, collection 반환.
 
         log.info(result);
 
-        long count = tuple.fetchCount();
+        long count = tuple.fetchCount(); // 조회 개수 조회, Long 타입 반환
         log.info("COUNT : " + count);
 
         return new PageImpl<Object[]>(result.stream().map(t -> t.toArray()).collect(Collectors.toList()),
                 pageable,count);
     } // searchPage()
+
+
 }
