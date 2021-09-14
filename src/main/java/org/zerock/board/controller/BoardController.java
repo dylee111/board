@@ -52,6 +52,7 @@ public class BoardController {
         model.addAttribute("dto", boardDTO);
     }
 
+    // String 의 리턴값은 임의 주소를 재지정 가능.
     @PostMapping("/modify")
     public String modify(RedirectAttributes redirectAttributes, BoardDTO dto, @ModelAttribute("requestDTO") PageRequestDTO requestDTO) {
 

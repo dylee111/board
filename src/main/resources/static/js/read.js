@@ -1,108 +1,3 @@
-<!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<!-- ~ : 내가 속한 리소스 , @ : template에 포한된 경우 -->
-<th:block th:replace="~{/layout/basic :: setContent( ~{this::content} )}">
-    <th:block th:fragment="content">
-        <h1 class="mt-4">Board Read Page</h1>
-
-        <!-- Bno -->
-        <div class="form-group">
-            <label>글 번호</label>
-            <input type="text" class="form-control" name="bno" th:value="${dto.bno}" readonly>
-        </div>
-        <div style="margin-bottom:20px"></div>
-
-        <!-- Title -->
-        <div class="form-group">
-            <label>글 제목</label>
-            <input type="text" class="form-control" name="title" th:value="${dto.title}" readonly>
-        </div>
-        <div style="margin-bottom:20px"></div>
-
-        <!-- Content -->
-        <div class="form-group">
-            <label>내용</label>
-            <textarea class="form-control" name="content" rows="5" readonly>[[${dto.content}]]</textarea>
-        </div>
-        <div style="margin-bottom:20px"></div>
-
-        <!-- Writer -->
-        <div class="form-group">
-            <label>작성자</label>
-            <input type="text" class="form-control" name="writer" th:value="${dto.writerName}" readonly>
-        </div>
-        <div style="margin-bottom:20px"></div>
-
-        <!-- Reg Date -->
-        <div class="form-group">
-            <label>등록 날짜</label>
-            <input type="text" class="form-control" name="regDate"
-                th:value="${#temporals.format(dto.regDate, 'yyyy/MM/dd HH:mm:ss')}" readonly>
-        </div>
-        <div style="margin-bottom:20px"></div>
-
-        <!-- Mod Date -->
-        <div class="form-group">
-            <label>수정 날짜</label>
-            <input type="text" class="form-control" name="modDate"
-                th:value="${#temporals.format(dto.modDate, 'yyyy/MM/dd HH:mm:ss')}" readonly>
-        </div>
-        <div style="margin-bottom:20px"></div>
-
-        <a th:href="@{/board/modify(bno = ${dto.bno},
-                                        page = ${requestDTO.page},
-                                        type = ${requestDTO.type},
-                                        keyword = ${requestDTO.keyword} )}">
-            <button type="button" class="btn btn-primary">수정</button>
-        </a>
-        <a th:href="@{/board/list(page = ${requestDTO.page},
-                                      type = ${requestDTO.type},
-                                      keyword = ${requestDTO.keyword} )}">
-            <button type="button" class="btn btn-info">목록보기</button>
-        </a>
-        <div style="margin-bottom:30px"></div>
-
-        <!-- 댓글 관련 버튼 -->
-        <div>
-            <div class="mt-4">
-                <h5 ><span class="btn btn-info badge replyCount">Reply Count [[${dto.replyCount}]]</span>
-                    <span class="btn btn-info badge addReply">Add Reply</span></h5>
-            </div>
-            <div class="list-group replyList">
-
-            </div>
-        </div>
-
-        <!-- Modal -->
-        <div class="modal" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Reply Modal</h5>
-                        <button class="btn btn-close replyClose" data-dismiss="modal" aria-label="Close"/>
-                    </div>
-                    <div class="modal-body">
-                        <!--                        <p id="modalMsg"> 번 글이 <span class="modal-title"></span>되었습니다.</p>-->
-                        <div class="form-group" style="margin-bottom:20px">
-                            <input class="form-control" type="text" name="replyText"  placeholder="Reply Text">
-                        </div>
-                        <div class="form-group">
-                            <input class="form-control" type="text" name="replyer" placeholder="Replyer" >
-                            <input type="hidden" name="rno">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-danger replyRemove">REMOVE</button>
-                        <button class="btn btn-primary replyModify">MODIFY</button>
-                        <button class="btn btn-info replySave">SAVE</button>
-                        <button class="btn btn-outline-secondary replyClose" data-dismiss="modal">CLOSE</button>
-                        <!--<button type="button" class="btn btn-primary">Save changes</button>-->
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <script th:inline="javascript">
             $(document).ready(function() {
                 var bno = [[${dto.bno}]];
                 loadJSONData();
@@ -112,7 +7,7 @@
 
 <!--
                 $(".replyCount").click(function() {
-                    var listGroup = $(".replyList");
+                var listGroup = $(".replyList");
                 }) // end click
 -->
 
@@ -255,8 +150,3 @@
                 }); // replyModify()
 
             }); // end script
-        </script>
-<!--    <script th:src="@{/js/read.js}"></script>-->
-    </th:block>
-</th:block>
-</html>

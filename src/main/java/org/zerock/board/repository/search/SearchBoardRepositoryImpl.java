@@ -108,7 +108,7 @@ public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport
         // tuple.orderBy(board.bno.desc());
                               // order : Consumer<>의 매개변수
         sort.stream().forEach(order -> {
-            Order direction = order.isAscending()? Order.ASC : Order.DESC;
+            Order direction = order.isAscending() ? Order.ASC : Order.DESC;
             String porp = order.getProperty();
 
             // PathBuilder : 동적 경로 생성을 위한 클래스. (EntityPathBase 클래스를 상속받음.)

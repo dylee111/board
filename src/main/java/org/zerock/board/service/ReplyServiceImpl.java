@@ -23,7 +23,7 @@ public class ReplyServiceImpl implements ReplyService {
         replyRepository.save(reply);
 
         return reply.getRno();
-    }
+    } // register()
 
     @Override
     public List<ReplyDTO> getList(Long bno) {
@@ -32,17 +32,17 @@ public class ReplyServiceImpl implements ReplyService {
 
         return result.stream()
                 .map(reply -> entityToDTO(reply)).collect(Collectors.toList());
-    }
+    } // getList()
 
     @Override
     public void modify(ReplyDTO replyDTO) {
         Reply reply = dtoToEntity(replyDTO);
 
         replyRepository.save(reply);
-    }
+    } // modify()
 
     @Override
     public void remove(Long rno) {
-        replyRepository.deleteByBno(rno);
+        replyRepository.deleteById(rno);
     }
 }

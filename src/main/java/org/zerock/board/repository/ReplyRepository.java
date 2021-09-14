@@ -12,9 +12,10 @@ public interface ReplyRepository extends JpaRepository<Reply, Long> {
     /**
      *  삭제 시 댓글 삭제
      */
-    @Modifying
+    @Modifying // Queries that require a `@Modifying` annotation include INSERT, UPDATE, DELETE, and DDL statements
     @Query("DELETE FROM Reply r WHERE r.board.bno=:bno ")
     void deleteByBno(Long bno);
+
     /**
      *  게시물로 댓글 목록 가져오가
      */

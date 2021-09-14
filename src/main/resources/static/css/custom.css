@@ -20,3 +20,11 @@ select {
     -moz-appearance: none;
     appearance: none;
 }
+
+.card-body {
+    border: 1px solid black;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 6px 6px grey;
+}
